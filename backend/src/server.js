@@ -4,7 +4,7 @@ import { ENV } from "./lib/env.js";
 const app = express();
 
 app.get("/", (req, res) => {
-  res.status(200).json({ msg: "Server is running 123" });
+  res.status(200).json({ msg: "Server is running 1234" });
 });
 
 app.listen(ENV.PORT, () =>
