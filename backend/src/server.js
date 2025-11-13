@@ -9,6 +9,6 @@ app.get("/", (req, res) => {
 });
 
 app.listen(ENV.PORT, () => {
-  console.log("Server is running on port:, ", ENV.PORT);
+  console.log("Server is running on port:", ENV.PORT);
   connectDB();
 });
