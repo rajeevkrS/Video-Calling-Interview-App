@@ -7,10 +7,7 @@ export const inngest = new Inngest({ id: "talent-iq" });
 
 // Function to sync user data from Clerk to our database
 const syncUser = inngest.createFunction(
-  {
-    id: "sync-user",
-  },
-
+  { id: "sync-user" },
   { event: "clerk/user.created" },
   async ({ event }) => {
     await connectDB();
@@ -42,8 +39,6 @@ const deleteUserfromDB = inngest.createFunction(
     const { id } = event.data;
 
     await User.deleteMany({ clerkId: id });
-
-    await User.create(newUser);
   }
 );
 

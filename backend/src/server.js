@@ -8,6 +8,8 @@ import { inngest, functions } from "./lib/inngest.js";
 
 const app = express();
 
+await connectDB();
+
 // Middleware for parsing JSON bodies
 app.use(express.json());
 app.use(cors());
@@ -20,5 +22,4 @@ app.get("/", (req, res) => {
 
 app.listen(ENV.PORT, () => {
   console.log("Server is running on port:", ENV.PORT);
-  connectDB();
 });
