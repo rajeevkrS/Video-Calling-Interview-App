@@ -5,7 +5,7 @@ import { ENV } from "./env.js";
 const apiKey = ENV.STREAM_API_KEY;
 const apiSecret = ENV.STREAM_SECRET_KEY;
 
-// Check if API key and Secret key are available
+// Check if API key and Secret key are available for initialization
 if (!apiKey || !apiSecret) {
   console.error(" Stream API key or Secret key is missing!");
 }
