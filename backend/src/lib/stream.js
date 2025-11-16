@@ -17,7 +17,7 @@ export const chatClinet = StreamChat.getInstance(apiKey, apiSecret);
 export const upsertStreamUser = async (userData) => {
   try {
     // upsertUsers method to create or update user
-    await chatClinet.upsertUsers(userData);
+    await chatClinet.upsertUsers({ userData });
     console.log("Stream user upseted successfully: ", userData);
   } catch (error) {
     console.error("Error upsert Stream user: ", error);
