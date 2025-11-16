@@ -17,7 +17,7 @@ export const chatClinet = StreamChat.getInstance(apiKey, apiSecret);
 export const upsertStreamUser = async (userData) => {
   try {
     // upsertUsers method to create or update user
-    await chatClinet.upsertUsers({ userData });
+    await chatClinet.upsertUsers(userData);
     console.log("Stream user upseted successfully: ", userData);
   } catch (error) {
     console.error("Error upsert Stream user: ", error);
@@ -28,7 +28,7 @@ export const upsertStreamUser = async (userData) => {
 export const deleteStreamUser = async (userId) => {
   try {
     // deleteUser method to remove user
-    await chatClinet.deleteUser([userId]);
+    await chatClinet.deleteUser(userId);
     console.log("Stream user deleted successfully: ", userId);
   } catch (error) {
     console.error("Error deleting the Stream user: ", error);
