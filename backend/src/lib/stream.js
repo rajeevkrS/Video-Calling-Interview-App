@@ -6,8 +6,8 @@ const apiKey = ENV.STREAM_API_KEY;
 const apiSecret = ENV.STREAM_SECRET_KEY;
 
 // Check if API key and Secret key are available
-if (!apiKey || !apiSECRET) {
-  console.error(" Stream API key or Secret key is missing!");
+if (!apiKey || !apiSecret) {
+  console.error("Stream API key or Secret key is missing!");
 }
 
 // Create and export the Stream Chat client instance
