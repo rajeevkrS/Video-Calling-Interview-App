@@ -1,10 +1,10 @@
-import { chatClinet } from "../lib/stream.js";
+import { chatClient } from "../lib/stream.js";
 
 // Controller to generate and return a Stream token for the authenticated user
 export async function getStreamToken(req, res) {
   try {
     // Generate a Stream token for the authenticated user using their Clerk ID (not mongoDB ID) for Stream => it should match the ID we have in the stream dashborad
-    const token = chatClinet.createToken(req.user.clerkId);
+    const token = chatClient.createToken(req.user.clerkId);
 
     // Return the token along with user details
     res.status(200).json({
