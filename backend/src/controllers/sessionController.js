@@ -50,9 +50,6 @@ export async function createSession(req, res) {
 
     await channel.create();
 
-    // // Save session to the database
-    // await session.save();
-
     res.status(201).json({ session });
   } catch (error) {
     console.error("Error creating session: ", error.message);
@@ -141,9 +138,19 @@ export async function joinSession(req, res) {
       return res.status(404).json({ message: "Session not found" });
     }
 
+    if (session.status !== "active") {
+      return res.status(404).json({ message: "Session is not active" });
+    }
+
+    if (session.host.toString() === userId.toString()) {
+      return res
+        .status(400)
+        .json({ message: "Host cannot join their own session as participant" });
+    }
+
     // check if session is already full- has a participant
     if (session.participant) {
-      return res.status(404).json({ message: "Session is full" });
+      return res.status(409).json({ message: "Session is full" });
     }
 
     // Add participant to stream video call
@@ -187,11 +194,6 @@ export async function endSession(req, res) {
       return res.status(400).json({ message: "Session is already completed" });
     }
 
-    // Mark session as completed
-    session.status = "completed";
-
-    await session.save();
-
     // Delete stream video call
     const call = streamClient.video.call("default", session.callId);
     await call.delete({ hard: true });
@@ -199,6 +201,11 @@ export async function endSession(req, res) {
     // Delete chat messaging channel
     const channel = chatClient.channel("messaging", session.callId);
     await channel.delete();
+
+    // Mark session as completed
+    session.status = "completed";
+
+    await session.save();
 
     res.status(200).json({ message: "Session ended successfully", session });
   } catch (error) {
