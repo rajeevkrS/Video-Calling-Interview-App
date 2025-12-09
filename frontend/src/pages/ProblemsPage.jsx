@@ -40,7 +40,7 @@ function ProblemsPage() {
               to={`/problem/${problem.id}`}
               className="card bg-base-100"
             >
-              <div className="card-body">
+              <div className="card-body rounded-xl hover:bg-green-950 transition-colors duration-200 ease-in-out">
                 <div className="flex items-center justify-between gap-4">
                   {/* Left Side */}
                   <div className="flex-1">
