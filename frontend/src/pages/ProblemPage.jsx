@@ -140,11 +140,18 @@ function ProblemPage() {
     }
   };
 
+  // Reset Code Handler
+  const handleResetCode = () => {
+    setCode(currentProblem.starterCode[selectedLanguage]);
+    setOutput(null);
+    toast.success("Code reset to default");
+  };
+
   return (
-    <div className="h-screen bg-base-100 flex flex-col">
+    <div className="h-screen bg-base-100 flex flex-col overflow-hidden">
       <Navbar />
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <PanelGroup direction="horizontal">
           {/* ---- LEFT PANEL- problem desciption ---- */}
           <Panel defaultSize={40} minSize={30}>
@@ -152,7 +159,7 @@ function ProblemPage() {
               problem={currentProblem}
               currentProblemId={currentProblemId}
               onProblemChange={handleProblemChange}
-              allProblem={Object.values(PROBLEMS)}
+              allProblems={Object.values(PROBLEMS)}
             />
           </Panel>
 
@@ -171,6 +178,7 @@ function ProblemPage() {
                   onLanguageChange={handleLanguageChange}
                   onCodeChange={setCode}
                   onRunCode={handleRunCode}
+                  onResetCode={handleResetCode}
                 />
               </Panel>
 

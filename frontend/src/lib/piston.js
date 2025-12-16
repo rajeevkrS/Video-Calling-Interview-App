@@ -5,7 +5,7 @@
 // the base URL to access the Piston API service, which runs code
 const PISTON_API = "https://emkc.org/api/v2/piston";
 
-const LANGIUAGES_VERSION = {
+const LANGUAGES_VERSION = {
   javascript: { language: "javascript", version: "18.15.0" },
   python: { language: "python", version: "3.10.0" },
   java: { language: "java", version: "15.0.2" },
@@ -22,7 +22,7 @@ const LANGIUAGES_VERSION = {
 export async function executeCode(language, code) {
   try {
     // Get language configuration
-    const languageConfig = LANGIUAGES_VERSION[language];
+    const languageConfig = LANGUAGES_VERSION[language];
     if (!languageConfig) {
       return { success: false, error: `Unsupported language: ${language}` };
     }

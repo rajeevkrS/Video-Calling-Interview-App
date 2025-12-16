@@ -5,10 +5,10 @@ function ProblemDescription({
   problem,
   currentProblemId,
   onProblemChange,
-  allProblem,
+  allProblems,
 }) {
   return (
-    <div className="h-full overflow-y-auto bg-base-200">
+    <div className="h-full overflow-y-auto bg-base-200 hide-scrollbar">
       {/* -----Header Section----- */}
       <div className="p-6 bg-base-100 border-b border-base-300">
         <div className="flex items-start justify-between mb-3">
@@ -32,7 +32,7 @@ function ProblemDescription({
             value={currentProblemId}
             onChange={(e) => onProblemChange(e.target.value)}
           >
-            {allProblem.map((p) => (
+            {allProblems.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.title} - {p.difficulty}
               </option>
@@ -44,7 +44,9 @@ function ProblemDescription({
       <div className="p-6 space-y-6">
         {/* Problem Desc */}
         <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
-          <h2 className="text-xl font-bold text-base-content">Desciption</h2>
+          <h2 className="text-xl font-bold text-base-content mb-2">
+            Description
+          </h2>
 
           <div className="space-y-3 text-base leading-relaxed">
             <p className="text-base-content/90">{problem.description.text}</p>
