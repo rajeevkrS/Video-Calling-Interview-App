@@ -16,9 +16,12 @@ function ProblemPage() {
 
   const [currentProblemId, setCurrentProblemId] = useState("two-sum");
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
-  const [code, setCode] = useState(
-    // stater code is JS becz selected language state is Javascript
-    PROBLEMS[currentProblemId].starterCode.javascript
+  const [code, setCode] = useState(() =>
+    loadCodeFromStorage(
+      currentProblemId,
+      selectedLanguage,
+      PROBLEMS[currentProblemId].starterCode[selectedLanguage]
+    )
   );
   const [output, setOutput] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -32,10 +35,13 @@ function ProblemPage() {
       // Updates state so the app knows which problem is currently active
       setCurrentProblemId(id);
 
-      // Loads the correct starter code for:
-      // ---The new problem
-      // ---The currently selected language
-      setCode(PROBLEMS[id].starterCode[selectedLanguage]);
+      const savedCode = loadCodeFromStorage(
+        id,
+        selectedLanguage,
+        PROBLEMS[id].starterCode[selectedLanguage]
+      );
+
+      setCode(savedCode);
 
       // Clears any previous output before running the new code
       setOutput(null);
@@ -48,8 +54,14 @@ function ProblemPage() {
     const newLang = e.target.value;
     setSelectedLanguage(newLang);
 
+    const savedCode = loadCodeFromStorage(
+      currentProblemId,
+      newLang,
+      currentProblem.starterCode[newLang]
+    );
+
     // Loads the default starter code for that language from the current problem
-    setCode(currentProblem.starterCode[newLang]);
+    setCode(savedCode);
 
     // Clears any previous output before running the new code
     setOutput(null);
@@ -142,7 +154,11 @@ function ProblemPage() {
 
   // Reset Code Handler
   const handleResetCode = () => {
-    setCode(currentProblem.starterCode[selectedLanguage]);
+    const defaultCode = currentProblem.starterCode[selectedLanguage];
+
+    localStorage.removeItem(getStorageKey(currentProblemId, selectedLanguage));
+
+    setCode(defaultCode);
     setOutput(null);
     toast.success("Code reset to default");
   };
@@ -176,7 +192,14 @@ function ProblemPage() {
                   code={code}
                   isRunning={isRunning}
                   onLanguageChange={handleLanguageChange}
-                  onCodeChange={setCode}
+                  onCodeChange={(value) => {
+                    setCode(value);
+                    saveCodeToStorage(
+                      currentProblemId,
+                      selectedLanguage,
+                      value
+                    );
+                  }}
                   onRunCode={handleRunCode}
                   onResetCode={handleResetCode}
                 />
@@ -198,3 +221,14 @@ function ProblemPage() {
 }
 
 export default ProblemPage;
+
+// Utility fuction to save code in local storage
+const getStorageKey = (problemId, language) => `code:${problemId}:${language}`;
+
+const loadCodeFromStorage = (problemId, language, fallback) => {
+  return localStorage.getItem(getStorageKey(problemId, language)) || fallback;
+};
+
+const saveCodeToStorage = (problemId, language, code) => {
+  localStorage.setItem(getStorageKey(problemId, language), code);
+};
