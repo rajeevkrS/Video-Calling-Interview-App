@@ -15,7 +15,14 @@ await connectDB();
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: ENV.CLIENT_URL,
+    credentials: true,
+  })
+);
+
 app.use(clerkMiddleware()); // this adds auth field to req object: req.auth()
 
 // Inngest endpoint to handle functions

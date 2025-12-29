@@ -63,6 +63,7 @@ export async function getActiveSessions(req, res) {
     // Fetch active sessions from the database and populate host details from User model like name, email
     const sessions = await Session.find({ status: "active" })
       .populate("host", "name email clerkId")
+      .populate("participant", "name email clerkId")
       .sort({ createdAt: -1 })
       .limit(20);
 
