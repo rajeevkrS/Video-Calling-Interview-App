@@ -25,7 +25,7 @@ export async function createSession(req, res) {
       .substring(7)}`;
 
     // Create new session in the database
-    const session = await Session({
+    const session = await Session.create({
       problem,
       difficulty,
       host: userId,
@@ -107,8 +107,8 @@ export async function getSessionById(req, res) {
 
     // Fetch session by ID and populate host and participant details
     const session = await Session.findById(id)
-      .populate("host", "name email")
-      .populate("participant", "name email");
+      .populate("host", "name email clerkId")
+      .populate("participant", "name email clerkId");
 
     if (!session) {
       return res.status(404).json({ message: "Session not found!" });

@@ -1,11 +1,30 @@
+import { useState } from "react";
 import { Code2, Clock, Users, Trophy, Loader } from "lucide-react";
 import { getDifficultyBadgeClass } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
 
-function RecentSessions({ sessions, isLoading }) {
+const ITEMS_PER_PAGE = 6;
+
+function RecentSessions({ sessions = [], isLoading }) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(sessions.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedSessions = sessions.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE,
+  );
+
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
   return (
     <div className="card bg-base-100 border-2 border-accent/20 hover:border-accent/30 mt-8">
       <div className="card-body">
+        {/* HEADER */}
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2 bg-gradient-to-br from-accent to-secondary rounded-xl">
             <Clock className="w-5 h-5 text-white" />
@@ -13,13 +32,14 @@ function RecentSessions({ sessions, isLoading }) {
           <h2 className="text-2xl font-black">Your Past Sessions</h2>
         </div>
 
+        {/* GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {isLoading ? (
             <div className="col-span-full flex items-center justify-center py-20">
               <Loader className="w-10 h-10 animate-spin text-primary" />
             </div>
-          ) : sessions.length > 0 ? (
-            sessions.map((session) => (
+          ) : paginatedSessions.length > 0 ? (
+            paginatedSessions.map((session) => (
               <div
                 key={session._id}
                 className={`card relative ${
@@ -54,7 +74,7 @@ function RecentSessions({ sessions, isLoading }) {
                       </h3>
                       <span
                         className={`badge badge-sm ${getDifficultyBadgeClass(
-                          session.difficulty
+                          session.difficulty,
                         )}`}
                       >
                         {session.difficulty}
@@ -105,6 +125,39 @@ function RecentSessions({ sessions, isLoading }) {
             </div>
           )}
         </div>
+
+        {/* PAGINATION */}
+        {!isLoading && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <button
+              className="btn btn-sm"
+              disabled={currentPage === 1}
+              onClick={() => goToPage(currentPage - 1)}
+            >
+              Prev
+            </button>
+
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <button
+                key={idx}
+                className={`btn btn-sm ${
+                  currentPage === idx + 1 ? "btn-primary" : "btn-ghost"
+                }`}
+                onClick={() => goToPage(idx + 1)}
+              >
+                {idx + 1}
+              </button>
+            ))}
+
+            <button
+              className="btn btn-sm"
+              disabled={currentPage === totalPages}
+              onClick={() => goToPage(currentPage + 1)}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

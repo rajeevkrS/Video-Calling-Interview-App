@@ -8,43 +8,65 @@ import {
   VideoIcon,
   ZapIcon,
 } from "lucide-react";
-import { SignInButton } from "@clerk/clerk-react";
+import { SignInButton, useUser } from "@clerk/clerk-react";
+import Navbar from "../components/Navbar";
+import { RiFacebookFill, RiLinkedinFill } from "react-icons/ri";
+import { AiFillInstagram } from "react-icons/ai";
 
 function HomePage() {
+  const { isSignedIn } = useUser();
+
+  const year = new Date().getFullYear();
+
+  const socialLinks = [
+    {
+      icon: <RiFacebookFill className="w-5 h-6" />,
+    },
+    {
+      icon: <RiLinkedinFill className="w-5 h-6" />,
+    },
+    {
+      icon: <AiFillInstagram className="w-5 h-6" />,
+    },
+  ];
+
   return (
     <div className="bg-gradient-to-br from-base-100 via-base-200 to-base-300">
-      {/* ----------NAVBAR---------- */}
-      <nav className="bg-base-100/80 backdrop-blur-md border-b border-primary/20 sticky top-0 z-50 shadow-lg">
-        <div className="max-w-7xl mx-auto p-4 flex items-center justify-between">
-          {/* LOGO */}
-          <Link
-            to={"/"}
-            className="flex items-center gap-3 hover:scale-105 transition-transform duration-200"
-          >
-            <div className="size-10 rounded-xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg">
-              <Gpu className="size-6 text-white" />
-            </div>
+      {isSignedIn ? (
+        <Navbar />
+      ) : (
+        <nav className="bg-base-100/80 backdrop-blur-md border-b border-primary/20 sticky top-0 z-50 shadow-lg">
+          <div className="max-w-7xl mx-auto p-4 flex items-center justify-between">
+            {/* LOGO */}
+            <Link
+              to={"/"}
+              className="flex items-center gap-3 hover:scale-105 transition-transform duration-200"
+            >
+              <div className="size-10 rounded-xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg">
+                <Gpu className="size-6 text-white" />
+              </div>
 
-            <div className="flex flex-col">
-              <span className="font-black text-xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
-                HIRE Meet
-              </span>
+              <div className="flex flex-col">
+                <span className="font-black text-xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
+                  HIRE Meet
+                </span>
 
-              <span className="text-xs text-base-content/60 font-medium -mt-1">
-                Code Together
-              </span>
-            </div>
-          </Link>
+                <span className="text-xs text-base-content/60 font-medium -mt-1">
+                  Code Together
+                </span>
+              </div>
+            </Link>
 
-          {/* Auth Button */}
-          <SignInButton mode="modal">
-            <button className="group px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2">
-              <span>Get Started</span>
-              <ArrowRightIcon className="size-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </SignInButton>
-        </div>
-      </nav>
+            {/* Auth Button */}
+            <SignInButton mode="modal">
+              <button className="group px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2">
+                <span>Get Started</span>
+                <ArrowRightIcon className="size-4 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </SignInButton>
+          </div>
+        </nav>
+      )}
 
       {/* ----------HERO SECTION---------- */}
       <div className="max-w-7xl mx-auto px-4 py-20">
@@ -91,10 +113,10 @@ function HomePage() {
             {/* CALL ACTION BUTTONS */}
             <div className="flex flex-wrap gap-4">
               <SignInButton mode="modal">
-                <button className="btn btn-primary btn-lg">
+                <Link to={"/problems"} className="btn btn-primary btn-lg">
                   Start Coding Now
                   <ArrowRightIcon className="size-5" />
-                </button>
+                </Link>
               </SignInButton>
 
               <button className="btn btn-outline btn-lg">
@@ -184,6 +206,31 @@ function HomePage() {
                 in real-time
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* -----------Copyright Text------------ */}
+      <div className="border-t border-base-300">
+        <hr className="border-t border-primary/20" />
+        <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* LEFT: Copyright */}
+          <p className="text-sm text-base-content/70 text-center sm:text-left">
+            Copyright © {year} HIRE Meet — All Rights Reserved.
+          </p>
+
+          {/* RIGHT: Social Icons */}
+          <div className="flex items-center gap-3">
+            {socialLinks.map((item, index) => (
+              <button
+                key={index}
+                className="group w-9 h-9 rounded-full border border-base-300 flex items-center justify-center hover:bg-primary transition-colors duration-200"
+              >
+                <span className="text-base-content group-hover:text-white transition-colors">
+                  {item.icon}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

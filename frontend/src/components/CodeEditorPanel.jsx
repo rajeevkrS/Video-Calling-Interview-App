@@ -44,7 +44,7 @@ function CodeEditorPanel({
             onClick={onResetCode}
           >
             <RotateCcwIcon className="size-4" />
-            Reset Code
+            Reset
           </button>
 
           {/* Run Button */}
