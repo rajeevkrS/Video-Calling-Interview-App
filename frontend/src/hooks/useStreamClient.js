@@ -18,7 +18,6 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
 
     const initCall = async () => {
       if (!session?.callId) return;
-
       if (!isHost && !isParticipant) return;
       if (session.status === "completed") return;
 
