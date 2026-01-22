@@ -28,7 +28,7 @@ export async function createSession(req, res) {
     const session = await Session.create({
       problem,
       difficulty,
-      host: userId,
+      hostClerkId: userId,
       callId,
     });
 

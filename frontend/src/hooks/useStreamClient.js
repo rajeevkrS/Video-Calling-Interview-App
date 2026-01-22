@@ -39,7 +39,14 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
 
         // Join video call
         videoCall = client.call("default", session.callId);
-        await videoCall.join({ create: true });
+
+        // prevent duplicate joins
+        if (videoCall.state.callingState === "joined") {
+          setCall(videoCall);
+          return;
+        }
+
+        await videoCall.join();
         setCall(videoCall);
 
         // Initialize Stream Chat
