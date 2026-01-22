@@ -46,7 +46,7 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
           return;
         }
 
-        await videoCall.join();
+        await videoCall.join({ create: true });
         setCall(videoCall);
 
         // Initialize Stream Chat
